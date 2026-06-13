@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Palpites</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>⚽ Palpites</header>
+
+<div class="card">
+<h3>🇧🇷 Brasil x Marrocos 🇲🇦</h3>
+
+<input id="casa" type="number" placeholder="Casa">
+x
+<input id="fora" type="number" placeholder="Fora">
+
+<button class="btn" onclick="salvar()">Salvar Palpite</button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "SUA_API_KEY",
+  authDomain: "SEU_APP.firebaseapp.com",
+  projectId: "SEU_ID",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.salvar = async function(){
+  await addDoc(collection(db,"palpites"),{
+    casa: document.getElementById("casa").value,
+    fora: document.getElementById("fora").value
+  });
+
+  alert("Palpite salvo!");
+}
+</script>
+
+</body>
+</html>
