@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - Bolão Copa 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0a0a;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: #ff0000;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .admin-card {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #333;
+        }
+
+        .admin-card h2 {
+            color: #ffdf00;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th {
+            background: #009c3b;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #333;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        .btn-verde {
+            background: #009c3b;
+            color: white;
+        }
+
+        .btn-vermelho {
+            background: #ff0000;
+            color: white;
+        }
+
+        .btn-amarelo {
+            background: #ffdf00;
+            color: #000;
+        }
+
+        .resultado-input {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .resultado-input input {
+            width: 60px;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            border: 2px solid #ffdf00;
+            background: #000;
+            color: #ffdf00;
+            border-radius: 5px;
+        }
+
+        .senha-admin {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .senha-box {
+            background: #1a1a1a;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid #ffdf00;
+        }
+
+        .senha-box input {
+            padding: 15px;
+            font-size: 20px;
+            text-align: center;
+            margin: 20px 0;
+            border: 2px solid #ffdf00;
+            background: #000;
+            color: #ffdf00;
+            border-radius: 10px;
+        }
+
+        .oculto {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TELA DE SENHA -->
+    <div class="senha-admin" id="telaSenha">
+        <div class="senha-box">
+            <h2>🔐 ACESSO RESTRITO</h2>
+            <p>Digite a senha do administrador</p>
+            <input type="password" id="senhaInput" placeholder="Senha">
+            <br>
+            <button class="btn btn-amarelo" onclick="verificarSenha()">ENTRAR</button>
+        </div>
+    </div>
+
+    <!-- PAINEL ADMIN (oculto inicialmente) -->
+    <div id="painelAdmin" class="oculto">
+        <div class="container">
+            
+            <div class="header">
+                <h1>⚙️ PAINEL DO ADMINISTRADOR</h1>
+                <p>Gerenciamento do Bolão Copa 2026</p>
+            </div>
+
+            <!-- RESUMO -->
+            <div class="admin-card">
+                <h2>📊 RESUMO DO BOLÃO</h2>
+                <table>
+                    <tr>
+                        <td>Total de Participantes:</td>
+                        <td><strong id="totalParticipantes">125</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Valor Arrecadado:</td>
+                        <td><strong style="color: #00ff00;">R$ 2.500,00</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Palpites Enviados:</td>
+                        <td><strong>120/125</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- CADASTRAR RESULTADOS -->
+            <div class="admin-card">
+                <h2>⚽ CADASTRAR RESULTADOS REAIS</h2>
+                
+                <div class="resultado-input">
+                    <span style="width: 150px;">🇧🇷 Brasil x Sérvia 🇷🇸</span>
+                    <input type="number" min="0" max="10" value="" placeholder="0">
+                    <span>X</span>
+                    <input type="number" min="0" max="10" value="" placeholder="0">
+                    <button class="btn btn-verde">SALVAR</button>
+                </div>
+
+                <div class="resultado-input">
+                    <span style="width: 150px;">🇲🇽 México x Camarões 🇨🇲</span>
+                    <input type="number" min="0" max="10" value="" placeholder="0">
+                    <span>X</span>
+                    <input type="number" min="0" max="10" value="" placeholder="0">
+                    <button class="btn btn-verde">SALVAR</button>
+                </div>
+
+                <!-- Mais jogos aqui... -->
+                
+                <button class="btn btn-amarelo" style="margin-top: 20px;" onclick="calcularPontuacao()">
+                    🧮 CALCULAR PONTUAÇÃO GERAL
+                </button>
+            </div>
+
+            <!-- LISTA DE PARTICIPANTES -->
+            <div class="admin-card">
+                <h2>👥 PARTICIPANTES</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>WhatsApp</th>
+                            <th>Pagamento</th>
+                            <th>Palpites</th>
+                            <th>Pontos</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaParticipantes">
+                        <tr>
+                            <td>João Silva</td>
+                            <td>(11) 99999-9999</td>
+                            <td style="color: #00ff00;">✅ Pago</td>
+                            <td>✅</td>
+                            <td>42</td>
+                            <td>
+                                <button class="btn btn-vermelho">❌</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <button class="btn btn-vermelho" onclick="logout()">🚪 SAIR</button>
+
+        </div>
+    </div>
+
+    <script>
+        function verificarSenha() {
+            const senha = document.getElementById('senhaInput').value;
+            if (senha === 'copa2026') {
+                document.getElementById('telaSenha').style.display = 'none';
+                document.getElementById('painelAdmin').classList.remove('oculto');
+            } else {
+                alert('Senha incorreta!');
+            }
+        }
+
+        function logout() {
+            document.getElementById('telaSenha').style.display = 'flex';
+            document.getElementById('painelAdmin').classList.add('oculto');
+            document.getElementById('senhaInput').value = '';
+        }
+
+        function calcularPontuacao() {
+            alert('🧮 Pontuação calculada com sucesso!\n\nRanking atualizado!');
+        }
+    </script>
+</body>
+</html>
