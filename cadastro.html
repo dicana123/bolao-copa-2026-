@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadastro</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>📝 Cadastro</header>
+
+<div class="card">
+
+<input id="email" placeholder="E-mail">
+<input id="senha" type="password" placeholder="Senha">
+<input id="nome" placeholder="Nome">
+
+<button class="btn" onclick="cadastrar()">Criar conta</button>
+
+<p id="msg"></p>
+
+</div>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+window.cadastrar = async function(){
+
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("senha").value;
+  const nome = document.getElementById("nome").value;
+
+  const user = await createUserWithEmailAndPassword(auth, email, senha);
+
+  await setDoc(doc(db,"usuarios", user.user.uid),{
+    nome,
+    email,
+    pontos: 0
+  });
+
+  document.getElementById("msg").innerHTML = "Conta criada!";
+}
+</script>
+
+</body>
+</html>
